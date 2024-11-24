@@ -1,0 +1,11 @@
+one_wire:
+  - platform: gpio
+    pin: GPIO0
+
+sensor:
+  - platform: dallas_temp
+    address: ${ds18b20_address}
+    name: temperature
+    update_interval: 60s
+    filters:
+      - offset: ${temperature_offset}
