@@ -5,3 +5,30 @@ esphome:
   project:
     name: Orion
     version: '0.0.1'
+
+api:
+
+logger:
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  ap:
+    ssid: ${friendly_name}
+    password: !secret wifi_ap_password
+
+captive_portal:
+
+sensor:
+  - platform: wifi_signal
+    name: ${friendly_name} WiFi Signal
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: ${friendly_name} IP Address
+
