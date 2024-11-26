@@ -1,0 +1,17 @@
+climate:
+  - platform: thermostat
+    name: ${thermostat_name}
+    sensor: ${temperature_sensor_id}
+    min_heating_off_time: 60s
+    min_heating_run_time: 30s
+    min_idle_time: 30s
+    heat_action:
+      - switch.turn_on: ${heater_switch_id}
+    idle_action:
+      - switch.turn_off: ${heater_switch_id}
+    default_preset: Home
+    preset:
+      - name: Home
+        default_target_temperature_low: 23 °C
+      - name: Away
+        default_target_temperature_low: 16 °C
