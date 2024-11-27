@@ -2,7 +2,7 @@ substitutions:
   one_wire_pin: GPIO0
   temperature_sensor_id: temperature
   temperature_sensor_name: Temperature
-  temperature_offset: 0
+  temperature_offset: "0"
 
 one_wire:
   - platform: gpio

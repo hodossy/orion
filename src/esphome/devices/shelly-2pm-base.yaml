@@ -1,6 +1,6 @@
 substitutions:
-  max_device_temperature: 80.0
-  max_channel_current: 8.0
+  max_device_temperature: "80.0"
+  max_channel_current: "8.0"
 
 esp32:
   board: esp32dev
@@ -21,7 +21,7 @@ switch:
     pin: GPIO12
     internal: true
     restore_mode: ALWAYS_OFF
-    interlock: [ch_1_switcn]
+    interlock: [ch_1_switch]
     interlock_wait_time: 200ms
 
 i2c:
@@ -45,7 +45,8 @@ sensor:
     on_value_range:
       - above: ${max_device_temperature}
         then:
-          - script.execute: blinds_stop
+          - switch.turn_off: ch_1_switch
+          - switch.turn_off: ch_2_switch
           - homeassistant.service:
               service: persistent_notification.create
               data:
