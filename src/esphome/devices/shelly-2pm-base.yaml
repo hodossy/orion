@@ -1,10 +1,128 @@
-esphome:
-  name: ${name}
-  friendly_name: ${friendly_name}
-  min_version: 2024.6.0
-  name_add_mac_suffix: false
-
 esp32:
   board: esp32dev
   framework:
     type: arduino
+
+#internal Shelly Switch Outputs
+switch:
+  - platform: gpio
+    id: "ch_1_switch"
+    pin: GPIO13
+    internal: true
+    restore_mode: ALWAYS_OFF
+    interlock: [ch_2_switch]
+    interlock_wait_time: 200ms
+  - platform: gpio
+    id: "ch_2_switch"
+    pin: GPIO12
+    internal: true
+    restore_mode: ALWAYS_OFF
+    interlock: [ch_1_switcn]
+    interlock_wait_time: 200ms
+
+i2c:
+  sda: GPIO26
+  scl: GPIO25
+
+sensor:
+  # internal temperature sensor
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: "${friendly_name} Temperature"
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    icon: "mdi:thermometer"
+    entity_category: "diagnostic"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      # ATTENTION in other template configurations for the Shelly Plus 2PM, the resistance is 4.7k
+      reference_temperature: 298.15K
+    on_value_range:
+      - above: ${max_device_temperature}
+        then:
+          - script.execute: blinds_stop
+          - homeassistant.service:
+              service: persistent_notification.create
+              data:
+                title: "Message from ${friendly_name}"
+              data_template:
+                message: "Relays turned off because temperature exceeded ${max_device_temperature} °C"
+
+  - platform: resistance
+    id: temp_resistance_reading
+    sensor: temp_analog_reading
+    configuration: DOWNSTREAM
+    resistor: 10kOhm # ATTENTION in other template configurations for the Shelly Plus 2PM, the resistance is 5.6k
+
+  - platform: adc
+    id: temp_analog_reading
+    pin: GPIO35
+    attenuation: 12db
+    update_interval: 10s
+
+  # power monitoring
+  - platform: ade7953_i2c
+    irq_pin: GPIO27 # Prevent overheating by setting this
+    voltage:
+      name: "${friendly_name} Voltage"
+      unit_of_measurement: V
+      accuracy_decimals: 1
+      icon: mdi:flash-outline
+    # On the Shelly Plus 2PM bought in Austria in 2024, the channels are in order: ch1=A ch2=B
+    current_a:
+      id: ch_1_current
+      name: "${friendly_name} Current CH 1"
+      unit_of_measurement: A
+      accuracy_decimals: 3
+      icon: mdi:current-ac
+      on_value_range:
+        - above: ${max_channel_current}
+          then:
+            - switch.turn_off: ch_1_switch
+            - homeassistant.service:
+                service: persistent_notification.create
+                data:
+                  title: "Message from ${friendly_name}"
+                data_template:
+                  message: "Turned off because current on CH 1 exceeded ${max_channel_current} A"
+    current_b:
+      id: ch_2_current
+      name: "${friendly_name} Current CH 2"
+      unit_of_measurement: A
+      accuracy_decimals: 3
+      icon: mdi:current-ac
+      on_value_range:
+        - above: ${max_channel_current}
+          then:
+            - switch.turn_off: ch_2_switch
+            - homeassistant.service:
+                service: persistent_notification.create
+                data:
+                  title: "Message from ${friendly_name}"
+                data_template:
+                  message: "Turned off because current on CH 2 exceeded ${max_channel_current} A"
+    active_power_a:
+      name: "${friendly_name} Power CH 1"
+      id: ch_1_power
+      unit_of_measurement: W
+      icon: mdi:gauge
+      # active_power_a is inverted, so multiply by -1
+      filters:
+        - multiply: -1
+    active_power_b:
+      name: "${friendly_name} Power CH 2"
+      id: ch_2_power
+      unit_of_measurement: W
+      icon: mdi:gauge
+      # active_power_b is inverted, so multiply by -1
+      filters:
+        - multiply: -1
+    update_interval: 0.5s
+
+  - platform: total_daily_energy
+    name: "${friendly_name} Total Daily Energy CH 1"
+    power_id: ch_1_power
+  - platform: total_daily_energy
+    name: "${friendly_name} Total Daily Energy CH 2"
+    power_id: ch_2_power
