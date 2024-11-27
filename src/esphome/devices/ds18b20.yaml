@@ -1,6 +1,8 @@
 substitutions:
   one_wire_pin: GPIO0
-  temperature_sensor: temperature
+  temperature_sensor_id: temperature
+  temperature_sensor_name: Temperature
+  temperature_offset: 0
 
 one_wire:
   - platform: gpio
@@ -9,7 +11,8 @@ one_wire:
 sensor:
   - platform: dallas_temp
     address: ${ds18b20_address}
-    name: ${temperature_sensor}
+    name: ${temperature_sensor_name}
+    id: ${temperature_sensor_id}
     update_interval: 60s
     filters:
       - offset: ${temperature_offset}

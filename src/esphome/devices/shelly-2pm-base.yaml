@@ -1,3 +1,7 @@
+substitutions:
+  max_device_temperature: 80.0
+  max_channel_current: 8.0
+
 esp32:
   board: esp32dev
   framework:

@@ -1,0 +1,16 @@
+substitutions:
+  name: "shelly-plus-2pm-1"
+  friendly_name: Shelly Plus 2PM 1
+  thermostat_name: Nappali termosztát
+  temperature_sensor_id: temperature
+  one_wire_pin: GPIO0
+  temperature_sensor_name: Nappali hőmérséklet
+  heater_switch_id: ch_1_switch
+  one_wire_pin: GPIO0
+  temperature_offset: 0
+
+packages:
+  base: !include ./common/base.yaml
+  device_base: !include ./devices/shelly-2pm-base.yaml
+  floor_temperature: !include ./devices/ds18b20.yaml
+  thermostat: !include ./common/thermostat.yaml
