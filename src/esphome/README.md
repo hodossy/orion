@@ -10,4 +10,8 @@ Contains all ESPHome specific stuff, commonly used for all (or at least most) of
 
 #### Devices
 
-Contains device specific code
+Contains device specific code in subfolders (Shelly, Sonoff, sensors, etc...), and complete bases for a use case with a specific device, e.g. Shelly Plus 2PM Thermostat.
+
+### Final configurations
+
+Every configuration file, from which a firmware is uploaded to a device, goes to the root of the folder (at least for now).
