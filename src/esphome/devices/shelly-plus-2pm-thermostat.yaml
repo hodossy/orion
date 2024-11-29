@@ -1,5 +1,5 @@
 substitutions:
-  project: Thermostat
+  project_name: Thermostat
   project_version: "0.0.2"
   temperature_sensor_id: temperature
   heater_switch_id: ch_1_switch
