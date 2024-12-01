@@ -4,9 +4,11 @@ cover:
     name: ${cover_name}
     open_action:
       - switch.turn_off: ${close_switch}
+      - delay: 50ms
       - switch.turn_on: ${open_switch}
     close_action:
       - switch.turn_off: ${open_switch}
+      - delay: 50ms
       - switch.turn_on: ${close_switch}
     stop_action:
       - switch.turn_off: ${close_switch}

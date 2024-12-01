@@ -1,6 +1,7 @@
 substitutions:
   name: "shelly-plus-2pm-9"
   friendly_name: Shelly Plus 2PM 9
+  cover_name: Nappali zsaluzia
   open_current_threshold: "0.05"
   open_obstacle_current_threshold: "0.1"
   open_duration: 10s
