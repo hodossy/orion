@@ -50,8 +50,8 @@ sensor:
         then:
           - switch.turn_off: ch_1_switch
           - switch.turn_off: ch_2_switch
-          - homeassistant.service:
-              service: persistent_notification.create
+          - homeassistant.action:
+              action: persistent_notification.create
               data:
                 title: "Message from ${friendly_name}"
               data_template:
@@ -88,8 +88,8 @@ sensor:
         - above: ${max_channel_current}
           then:
             - switch.turn_off: ch_1_switch
-            - homeassistant.service:
-                service: persistent_notification.create
+            - homeassistant.action:
+                action: persistent_notification.create
                 data:
                   title: "Message from ${friendly_name}"
                 data_template:
@@ -104,8 +104,8 @@ sensor:
         - above: ${max_channel_current}
           then:
             - switch.turn_off: ch_2_switch
-            - homeassistant.service:
-                service: persistent_notification.create
+            - homeassistant.action:
+                action: persistent_notification.create
                 data:
                   title: "Message from ${friendly_name}"
                 data_template:
