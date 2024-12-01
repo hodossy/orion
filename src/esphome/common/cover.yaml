@@ -1,0 +1,33 @@
+cover:
+  - platform: current_based
+    device_class: shutter
+    name: ${cover_name}
+    open_action:
+      - switch.turn_off: ${close_switch}
+      - switch.turn_on: ${open_switch}
+    close_action:
+      - switch.turn_off: ${open_switch}
+      - switch.turn_on: ${close_switch}
+    stop_action:
+      - switch.turn_off: ${close_switch}
+      - switch.turn_off: ${open_switch}
+    open_sensor: ${open_current_sensor}
+    open_moving_current_threshold: ${open_current_threshold}
+    open_obstacle_current_threshold: ${open_obstacle_current_threshold}
+    open_duration: ${open_duration}
+    close_sensor: ${close_current_sensor}
+    close_moving_current_threshold: ${close_current_threshold}
+    close_obstacle_current_threshold: ${close_obstacle_current_threshold}
+    close_duration: ${close_duration}
+    max_duration: ${max_duration}
+    # obstacle_rollback: 10% # default
+    start_sensing_delay: ${start_sensing_delay}
+    malfunction_detection: true
+    malfunction_action:
+      then:
+        - homeassistant.action:
+            action: persistent_notification.create
+            data:
+              title: "Message from ${friendly_name}"
+            data_template:
+              message: "Malfunction detected "
