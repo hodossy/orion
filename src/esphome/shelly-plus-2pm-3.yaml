@@ -1,0 +1,10 @@
+substitutions:
+  name: "shelly-plus-2pm-3"
+  friendly_name: Shelly Plus 2PM 3
+  thermostat_name: Dolgozó termosztát
+  temperature_sensor_name: Dolgozó hőmérséklet
+  temperature_offset: "-10"
+  ds18b20_address: "0xd205032934646128"
+
+packages:
+  base: !include ./devices/shelly-plus-2pm-thermostat.yaml
