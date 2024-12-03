@@ -1,0 +1,13 @@
+substitutions:
+  name: "shelly-plus-2pm-19"
+  friendly_name: Shelly Plus 2PM 19
+  cover_name: Nappali zsaluzia
+  open_current_threshold: "0.05"
+  open_obstacle_current_threshold: "0.1"
+  open_duration: 10s
+  close_current_threshold: "0.05"
+  close_obstacle_current_threshold: "0.1"
+  close_duration: 10s
+
+packages:
+  base: !include ./devices/shelly-plus-2pm-tilt-cover.yaml
