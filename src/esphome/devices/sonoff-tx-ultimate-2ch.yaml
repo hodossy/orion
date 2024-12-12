@@ -1,0 +1,11 @@
+substitutions:
+  project_name: Light Switch 2CH
+  project_version: "0.0.1"
+  relay_count: "2"
+
+packages:
+  smarthomeyourself.tx-ultimate:
+    url: https://github.com/SmartHome-yourself/sonoff-tx-ultimate-for-esphome
+    file: tx_ultimate.yaml
+    ref: main
+  base: !include ../common/base.yaml

@@ -1,0 +1,6 @@
+substitutions:
+  name: "sonoff-tx-ultimate-9"
+  friendly_name: Sonoff TX Ultimate 9
+
+packages:
+  base: !include ./devices/sonoff-tx-ultimate-2ch.yaml
