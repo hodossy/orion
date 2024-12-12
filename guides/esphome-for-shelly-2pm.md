@@ -1,5 +1,13 @@
 # Shelly 2PM
 
+Chip info (ESPHome CLI output)
+
+```
+Chip is ESP32-U4WDH (revision v3.1)
+Features: WiFi, BT, Dual Core, 240MHz, Embedded Flash, VRef calibration in efuse, Coding Scheme None
+Crystal is 40MHz
+```
+
 ## Flashing ESPHome
 
 #### Requirements
@@ -14,7 +22,7 @@
 
 ![Shelly Plus 2PM pinout](./images/shelly_plus_2pm_pinout.webp)
 
-3. Connect GND to GPIO 0 to put the device into flash mode. For this, I would not use the exposed GPIO pin port, I just simply connected the surface connectors with a 2.54 mm jumper cable.
+3. Connect GND to GPIO 0 to put the device into flash mode. For this, I would not use the exposed GPIO pin port, I just simply connected the surface connectors with a solid copper wire, or a 2.54 mm jumper cable. Boot mode is indicated by a continous red LED, however it goes off if you disconnect GPIO0 and GND. It does not affect the flashing, the device remains in BOOT mode.
 4. Connect the bridge to the computer
 5. Prepare the device for first use
 
