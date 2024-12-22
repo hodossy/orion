@@ -3,8 +3,8 @@ substitutions:
   friendly_name: Shelly Plus 2PM 5
   thermostat_name: Zuhanyzó termosztát
   temperature_sensor_name: Zuhanyzó hőmérséklet
-  temperature_offset: "-10"
-  ds18b20_address: "0xd205032934646128"
+  temperature_offset: "-13.6"
+  ds18b20_address: "0x5d2a152834646128"
 
 packages:
   base: !include ./devices/shelly-plus-2pm-thermostat.yaml

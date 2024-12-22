@@ -3,8 +3,8 @@ substitutions:
   friendly_name: Shelly Plus 2PM 6
   thermostat_name: Gyerekszoba 1 termosztát
   temperature_sensor_name: Gyerekszoba 1 hőmérséklet
-  temperature_offset: "-10"
-  ds18b20_address: "0xd205032934646128"
+  temperature_offset: "-11.1"
+  ds18b20_address: "0x1568fe2b34646128"
 
 packages:
   base: !include ./devices/shelly-plus-2pm-thermostat.yaml
