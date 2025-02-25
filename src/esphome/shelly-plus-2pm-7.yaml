@@ -1,8 +1,8 @@
 substitutions:
   name: "shelly-plus-2pm-7"
   friendly_name: Shelly Plus 2PM 7
-  thermostat_name: Gyerekszoba 2 termosztát
-  temperature_sensor_name: Gyerekszoba 2 hőmérséklet
+  thermostat_name: Háló termosztát
+  temperature_sensor_name: Háló hőmérséklet
   temperature_offset: "0.5"
   ds18b20_address: "0x0375142834646128"
 
