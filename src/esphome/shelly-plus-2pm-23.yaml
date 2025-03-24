@@ -1,7 +1,7 @@
 substitutions:
   name: "shelly-plus-2pm-23"
   friendly_name: Shelly Plus 2PM 23
-  cover_name: Boti szoba északi zsaluzia
+  cover_name: Boti szoba nyugati zsaluzia
   open_current_threshold: "0.45"
   open_obstacle_current_threshold: "0.8"
   open_duration: 45s
