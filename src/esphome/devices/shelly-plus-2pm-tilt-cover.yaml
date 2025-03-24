@@ -5,7 +5,6 @@ substitutions:
   open_current_sensor: ch_1_current
   close_switch: ch_2_switch
   close_current_sensor: ch_2_current
-  max_duration: 30s
   start_sensing_delay: 500ms
 
 packages:
