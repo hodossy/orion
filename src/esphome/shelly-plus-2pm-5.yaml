@@ -3,7 +3,7 @@ substitutions:
   friendly_name: Shelly Plus 2PM 5
   thermostat_name: Boti szoba termosztát
   temperature_sensor_name: Boti szoba hőmérséklet
-  temperature_offset: "-13.6"
+  temperature_offset: "0.4"
   ds18b20_address: "0x5d2a152834646128"
 
 packages:

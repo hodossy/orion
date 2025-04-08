@@ -3,7 +3,7 @@ substitutions:
   friendly_name: Shelly Plus 2PM 1
   thermostat_name: Konyha termosztát
   temperature_sensor_name: Konyha hőmérséklet
-  temperature_offset: "0.6"
+  temperature_offset: "0"
   ds18b20_address: "0xd205032934646128"
 
 packages:

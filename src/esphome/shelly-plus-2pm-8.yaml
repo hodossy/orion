@@ -3,7 +3,7 @@ substitutions:
   friendly_name: Shelly Plus 2PM 8
   thermostat_name: Dolgozó termosztát
   temperature_sensor_name: Dolgozó hőmérséklet
-  temperature_offset: "-0.6"
+  temperature_offset: "0.3"
   ds18b20_address: "0x9a117f2b34646128"
 
 packages:

@@ -3,7 +3,7 @@ substitutions:
   friendly_name: Shelly Plus 2PM 3
   thermostat_name: Fürdő termosztát
   temperature_sensor_name: Fürdő hőmérséklet
-  temperature_offset: "-13"
+  temperature_offset: "2"
   ds18b20_address: "0x1f09042934646128"
 
 packages:
