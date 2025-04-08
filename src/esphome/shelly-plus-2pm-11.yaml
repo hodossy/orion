@@ -8,7 +8,7 @@ substitutions:
   close_current_threshold: "0.45"
   close_obstacle_current_threshold: "0.8"
   close_duration: 45s
-  max_duration: 60s
+  max_duration: 50s
 
 packages:
   base: !include ./devices/shelly-plus-2pm-tilt-cover.yaml

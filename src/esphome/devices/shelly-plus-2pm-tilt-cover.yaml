@@ -5,7 +5,7 @@ substitutions:
   open_current_sensor: ch_1_current
   close_switch: ch_2_switch
   close_current_sensor: ch_2_current
-  start_sensing_delay: 500ms
+  start_sensing_delay: 1s
 
 packages:
   base: !include ../common/base.yaml

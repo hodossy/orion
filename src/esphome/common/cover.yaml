@@ -3,14 +3,17 @@ cover:
     device_class: shutter
     name: ${cover_name}
     open_action:
+      then:
       - switch.turn_off: ${close_switch}
       - delay: 50ms
       - switch.turn_on: ${open_switch}
     close_action:
+      then:
       - switch.turn_off: ${open_switch}
       - delay: 50ms
       - switch.turn_on: ${close_switch}
     stop_action:
+      then:
       - switch.turn_off: ${close_switch}
       - switch.turn_off: ${open_switch}
     open_sensor: ${open_current_sensor}

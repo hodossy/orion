@@ -1,13 +1,14 @@
 substitutions:
   name: "shelly-plus-2pm-13"
   friendly_name: Shelly Plus 2PM 13
-  cover_name: Nappali zsaluzia
-  open_current_threshold: "0.05"
-  open_obstacle_current_threshold: "0.1"
-  open_duration: 10s
-  close_current_threshold: "0.05"
-  close_obstacle_current_threshold: "0.1"
-  close_duration: 10s
+  cover_name: Konyha ablak zsaluzia
+  open_current_threshold: "0.45"
+  open_obstacle_current_threshold: "0.8"
+  open_duration: 18s
+  close_current_threshold: "0.45"
+  close_obstacle_current_threshold: "0.8"
+  close_duration: 18s
+  max_duration: 23s
 
 packages:
   base: !include ./devices/shelly-plus-2pm-tilt-cover.yaml
