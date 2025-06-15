@@ -1,3 +1,4 @@
+---
 substitutions:
   device_version: "shelly2pm.1"
   max_device_temperature: "90.0"
@@ -118,7 +119,9 @@ sensor:
       icon: mdi:gauge
       # active_power_a is inverted, so multiply by -1
       filters:
-        - multiply: -1
+        - lambda: |-
+            if (x < 0) return -1 * x;
+            return x;
     active_power_b:
       name: "${friendly_name} Power CH 2"
       id: ch_2_power
@@ -126,7 +129,9 @@ sensor:
       icon: mdi:gauge
       # active_power_b is inverted, so multiply by -1
       filters:
-        - multiply: -1
+        - lambda: |-
+            if (x < 0) return -1 * x;
+            return x;
     update_interval: 0.5s
 
   - platform: total_daily_energy
