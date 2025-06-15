@@ -1,6 +1,5 @@
+---
 substitutions:
-  project_name: Tilt Cover
-  project_version: "0.0.1"
   open_switch: ch_1_switch
   open_current_sensor: ch_1_current
   close_switch: ch_2_switch

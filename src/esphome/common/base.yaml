@@ -1,14 +1,19 @@
+---
+substitutions:
+  base_version: 1
+
 esphome:
   name: ${name}
   friendly_name: ${friendly_name}
   min_version: 2024.6.0
   project:
     name: Orion.${project_name}
-    version: ${project_version}
+    version: ${base_version}.${project_version}-${device_version}
 
 api:
 
 logger:
+  initial_level: INFO
 
 ota:
   - platform: esphome
@@ -23,6 +28,10 @@ wifi:
 
 captive_portal:
 
+select:
+  - platform: logger
+    name: ${friendly_name} Log Level
+
 sensor:
   - platform: wifi_signal
     name: ${friendly_name} WiFi Signal
@@ -33,3 +42,12 @@ text_sensor:
       name: ${friendly_name} IP Address
     mac_address:
       name: ${friendly_name} MAC Address
+  - platform: version
+    name: ${friendly_name} ESPHome Version
+    hide_timestamp: true
+
+button:
+  - platform: restart
+    name: ${friendly_name} Restart
+  - platform: safe_mode
+    name: ${friendly_name} Restart (Safe Mode)

@@ -1,3 +1,8 @@
+---
+substitutions:
+  project_name: Thermostat
+  project_version: "3"
+
 climate:
   - platform: thermostat
     id: my_thermostat

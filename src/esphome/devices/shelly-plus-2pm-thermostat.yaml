@@ -1,6 +1,5 @@
+---
 substitutions:
-  project_name: Thermostat
-  project_version: "0.0.3"
   temperature_sensor_id: temperature
   heater_switch_id: ch_1_switch
   one_wire_pin: GPIO0
