@@ -69,7 +69,7 @@ sensor:
     id: temp_analog_reading
     pin: GPIO35
     attenuation: 12db
-    update_interval: 10s
+    update_interval: 60s
 
   # power monitoring
   - platform: ade7953_i2c
@@ -79,6 +79,8 @@ sensor:
       unit_of_measurement: V
       accuracy_decimals: 0
       icon: mdi:flash-outline
+      filters:
+        - delta: 5
     # On the Shelly Plus 2PM bought in Austria in 2024, the channels are in order: ch1=A ch2=B
     current_a:
       id: ch_1_current
@@ -96,6 +98,8 @@ sensor:
                   title: "Message from ${friendly_name}"
                 data_template:
                   message: "Turned off because current on CH 1 exceeded ${max_channel_current} A"
+      filters:
+        - delta: 0.2
     current_b:
       id: ch_2_current
       name: "${friendly_name} Current CH 2"
@@ -112,6 +116,8 @@ sensor:
                   title: "Message from ${friendly_name}"
                 data_template:
                   message: "Turned off because current on CH 2 exceeded ${max_channel_current} A"
+      filters:
+        - delta: 0.2
     active_power_a:
       name: "${friendly_name} Power CH 1"
       id: ch_1_power
@@ -122,6 +128,7 @@ sensor:
         - lambda: |-
             if (x < 0) return -1 * x;
             return x;
+        - delta: 5
     active_power_b:
       name: "${friendly_name} Power CH 2"
       id: ch_2_power
@@ -132,6 +139,7 @@ sensor:
         - lambda: |-
             if (x < 0) return -1 * x;
             return x;
+        - delta: 5
     update_interval: 0.5s
 
   - platform: total_daily_energy
