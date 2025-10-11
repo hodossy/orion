@@ -1,3 +1,4 @@
+---
 substitutions:
   device_version: "sonoff_tx_ultimate.1"
   vibra_time: 150ms
