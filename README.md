@@ -4,7 +4,7 @@ Orion is our home automation center, based on Home Assistant and ESPHome. I try 
 
 ### Heating
 
-I have underfloor heating mats, for which a simple smart switch could do the trick, but I have chosen the Shelly Plus 2 PM since it has GPIO0 pin conveniently accessible for a DS18B20 temperature sensor (along with VCC and GND).
+I have underfloor heating mats, for which a simple smart switch could do the trick, but I have chosen the Shelly Plus 2 PM since it has GPIO0 pin conveniently accessible for a DS18B20 temperature sensor (along with VCC and GND to power the OneWire protocol).
 
 ### Cover automation
 
