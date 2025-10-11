@@ -77,14 +77,14 @@ sensor:
     voltage:
       name: "${friendly_name} Voltage"
       unit_of_measurement: V
-      accuracy_decimals: 1
+      accuracy_decimals: 0
       icon: mdi:flash-outline
     # On the Shelly Plus 2PM bought in Austria in 2024, the channels are in order: ch1=A ch2=B
     current_a:
       id: ch_1_current
       name: "${friendly_name} Current CH 1"
       unit_of_measurement: A
-      accuracy_decimals: 3
+      accuracy_decimals: 2
       icon: mdi:current-ac
       on_value_range:
         - above: ${max_channel_current}
@@ -100,7 +100,7 @@ sensor:
       id: ch_2_current
       name: "${friendly_name} Current CH 2"
       unit_of_measurement: A
-      accuracy_decimals: 3
+      accuracy_decimals: 2
       icon: mdi:current-ac
       on_value_range:
         - above: ${max_channel_current}
