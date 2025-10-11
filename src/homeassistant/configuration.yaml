@@ -1,0 +1,26 @@
+---
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# Custom entities via the template integration
+template: !include templates.yaml
+
+system_log:
+  fire_event: true
+
+recorder:
+  db_url: !secret db_connection_string
+  db_retry_wait: 10
+  auto_purge: false
+  purge_keep_days: 366
+
+shell_command:
+  fetch_config: "cd {{ config_folder }} && git clone {{ repository }}"
