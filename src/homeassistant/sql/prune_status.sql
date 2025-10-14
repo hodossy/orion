@@ -39,6 +39,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS _states_meta  AS (
   where (
        states_meta.entity_id like '%2pm\_%\_voltage%'
     or states_meta.entity_id like '%2pm\_%\_power%'
+    or states_meta.entity_id like '%2pm\_%\_total\_daily\_energy%'
     or states_meta.entity_id like '%futes%'
   )
 );
