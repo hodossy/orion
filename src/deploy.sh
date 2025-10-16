@@ -7,7 +7,9 @@ echo ""
 
 today=$(date -I)
 backup_dir=/backup/orion-$today
+
 echo "Creating backups at $backup_dir..."
+mkdir $backup_dir
 for d in ./*/; do
   backup_script=$d/scripts/backup.sh
   dirname=$(basename "$d")
