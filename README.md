@@ -1,6 +1,8 @@
 # Orion
 
-Orion is our home automation center, based on Home Assistant and ESPHome. I try to use only open source solution, where it is available. Current use cases I try to solve to the best of my knowledge
+Orion is our home automation center, based on Home Assistant and ESPHome, running on Proxmox and connected with OpenWRT. I try to use only open source solution, where it is available. This place is intended to store all my configurations, and I try to document everything here, so my future self or the poor soul after me who needs to tinker with my setup can have an aid in doing so. Goal is my wife/children could do everything they need based on these [guides](./guides), please check them.
+
+## Use Cases
 
 ### Heating
 
