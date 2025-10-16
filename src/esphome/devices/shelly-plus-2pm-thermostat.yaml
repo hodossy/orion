@@ -5,7 +5,6 @@ substitutions:
   one_wire_pin: GPIO0
 
 packages:
-  base: !include ../common/base.yaml
-  device_base: !include ./shelly/shelly-plus-2pm-base.yaml
+  device: !include ./shelly/shelly-plus-2pm-base.yaml
   floor_temperature: !include ./sensors/temperature-ds18b20.yaml
-  thermostat: !include ../common/thermostat.yaml
+  use_case: !include ../common/thermostat.yaml

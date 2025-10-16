@@ -7,6 +7,5 @@ substitutions:
   start_sensing_delay: 1s
 
 packages:
-  base: !include ../common/base.yaml
-  device_base: !include ./shelly/shelly-plus-2pm-base.yaml
-  cover: !include ../common/cover.yaml
+  device: !include ./shelly/shelly-plus-2pm-base.yaml
+  use_case: !include ../common/cover.yaml
