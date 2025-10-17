@@ -7,8 +7,11 @@ echo "|-------------- ESPHOME --------------|"
 echo "|-------------------------------------|"
 echo ""
 
+# make sure globstar is on for ** to work
+shopt -s globstar
+
 echo "Updated definition files:"
-for f in **/*.yaml *.yaml; do
+for f in **/*.yaml; do
   if [ -f "$f" ] && cmp $f $target_folder/$f >& /dev/null; then
     # empty command
     :
