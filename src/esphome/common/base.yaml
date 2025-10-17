@@ -1,6 +1,6 @@
 ---
 substitutions:
-  base_version: 1
+  base_version: "1"
 
 esphome:
   name: ${name}
