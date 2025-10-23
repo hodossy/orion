@@ -6,4 +6,4 @@ else
   (cd /tmp/orion && git pull --progress origin)
 fi
 
-cd /tmp/origin/src && ./deploy.sh
+cd /tmp/orion/src && ./deploy.sh
