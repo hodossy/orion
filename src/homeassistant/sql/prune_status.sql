@@ -12,7 +12,7 @@ DO $$ BEGIN RAISE NOTICE '[%] Preparing metadata...', NOW(); END$$;
 DROP TABLE IF EXISTS _timeref;
 CREATE TEMPORARY TABLE IF NOT EXISTS _timeref as (
   SELECT
-    EXTRACT (EPOCH FROM (CURRENT_DATE - INTEGER '1')::timestamp) as _start
+    EXTRACT (EPOCH FROM to_timestamp('2025-10-19', 'YYYY-MM-DD')) as _start
 );
 
 DROP TABLE IF EXISTS _timerange;

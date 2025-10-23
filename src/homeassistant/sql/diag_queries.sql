@@ -1,39 +1,41 @@
-SELECT states.metadata_id as id, states_meta.entity_id as entity_id, count(*) as count
-from states
-join states_meta on states.metadata_id=states_meta.metadata_id
+-- List entities by states count
+SELECT 
+  states.metadata_id AS id, 
+  states_meta.entity_id AS entity_id,
+--  date_trunc('day', to_timestamp(last_updated_ts)),
+  count(*) AS count
+FROM states
+JOIN states_meta ON states.metadata_id=states_meta.metadata_id
 -- where (states_meta.entity_id like '%2pm\_%_voltage%'
 --   or states_meta.entity_id like '%2pm\_%\_power%'
 --   or states_meta.entity_id like '%futes%'
 -- )
-group by states.metadata_id, states_meta.entity_id
-order by count desc;
+-- WHERE states.last_updated_ts>1760745600
+GROUP BY states.metadata_id, states_meta.entity_id
+ORDER BY count DESC;
 
+-- min and max human readable timestamps
+SELECT to_timestamp(min(last_updated_ts)), to_timestamp(max(last_updated_ts)) FROM states;
 
--- SELECT to_timestamp(min(last_updated_ts)), to_timestamp(max(last_updated_ts)) from states;
+-- get timestamp as double from the day string at the start of day (00:00:00)
+SELECT EXTRACT (EPOCH FROM to_timestamp('2025-10-19', 'YYYY-MM-DD')) as _start
 
--- SELECT
---   states_meta.*
--- from states_meta
--- where (
---      states_meta.entity_id like '%2pm\_%\_voltage%'
---   or states_meta.entity_id like '%2pm\_%\_power%'
---   or states_meta.entity_id like '%futes%'
--- )
-
-select
-  table_name,
-  pg_size_pretty(pg_total_relation_size(quote_ident(table_name))),
-  pg_total_relation_size(quote_ident(table_name))
-from information_schema.tables
-where table_schema = 'public'
-order by 3 desc;
-
+-- List number of states entries by day
 SELECT
   date_trunc('day', to_timestamp(last_updated_ts)),
   count(*)
 FROM states
 GROUP BY 1
 ORDER BY 1 DESC;
+
+-- List tables by their total size
+SELECT
+  table_name,
+  pg_size_pretty(pg_total_relation_size(quote_ident(table_name))),
+  pg_total_relation_size(quote_ident(table_name))
+FROM information_schema.tables
+WHERE table_schema = 'public'
+ORDER BY 3 desc;
 
 -- find what eats the space of a table: replace public.tbl with the table name
 -- https://stackoverflow.com/questions/62642234/index-size-after-autovacuum
