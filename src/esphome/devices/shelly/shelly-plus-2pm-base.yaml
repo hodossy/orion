@@ -1,6 +1,6 @@
 ---
 substitutions:
-  device_version: "shelly2pm.1"
+  device_version: "shelly2pm.2"
   max_device_temperature: "90.0"
   max_channel_current: "8.0"
 
@@ -13,17 +13,17 @@ esp32:
   framework:
     type: arduino
 
-#internal Shelly Switch Outputs
+# internal Shelly Switch Outputs
 switch:
   - platform: gpio
-    id: "ch_1_switch"
+    id: ch_1_switch
     pin: GPIO13
     internal: true
     restore_mode: ALWAYS_OFF
     interlock: [ch_2_switch]
     interlock_wait_time: 200ms
   - platform: gpio
-    id: "ch_2_switch"
+    id: ch_2_switch
     pin: GPIO12
     internal: true
     restore_mode: ALWAYS_OFF
@@ -33,6 +33,26 @@ switch:
 i2c:
   sda: GPIO26
   scl: GPIO25
+
+# internal sensors to help energy metering
+# delayed off helps to measure consumption accurately
+binary_sensor:
+  - platform: switch
+    id: ch_1_should_be_metered
+    internal: true
+    source_id: ch_1_switch
+    filters:
+      - delayed_off: 1s
+    on_press:
+      - script.execute: update_ade7953
+  - platform: switch
+    id: ch_2_should_be_metered
+    internal: true
+    source_id: ch_2_switch
+    filters:
+      - delayed_off: 1s
+    on_press:
+      - script.execute: update_ade7953
 
 sensor:
   # internal temperature sensor
@@ -64,7 +84,8 @@ sensor:
     id: temp_resistance_reading
     sensor: temp_analog_reading
     configuration: DOWNSTREAM
-    resistor: 10kOhm # ATTENTION in other template configurations for the Shelly Plus 2PM, the resistance is 5.6k
+    # ATTENTION in other template configurations for the Shelly Plus 2PM, the resistance is 5.6k
+    resistor: 10kOhm
 
   - platform: adc
     id: temp_analog_reading
@@ -74,14 +95,16 @@ sensor:
 
   # power monitoring
   - platform: ade7953_i2c
-    irq_pin: GPIO27 # Prevent overheating by setting this
+    id: energy_meter
+    # Prevent overheating by setting irq_pin
+    irq_pin: GPIO27
     voltage:
       name: "${friendly_name} Voltage"
       unit_of_measurement: V
       accuracy_decimals: 0
       icon: mdi:flash-outline
       filters:
-        - delta: 5
+        - delta: 1
     # On the Shelly Plus 2PM bought in Austria in 2024, the channels are in order: ch1=A ch2=B
     current_a:
       id: ch_1_current
@@ -99,8 +122,6 @@ sensor:
                   title: "Message from ${friendly_name}"
                 data_template:
                   message: "Turned off because current on CH 1 exceeded ${max_channel_current} A"
-      filters:
-        - delta: 0.2
     current_b:
       id: ch_2_current
       name: "${friendly_name} Current CH 2"
@@ -117,8 +138,6 @@ sensor:
                   title: "Message from ${friendly_name}"
                 data_template:
                   message: "Turned off because current on CH 2 exceeded ${max_channel_current} A"
-      filters:
-        - delta: 0.2
     active_power_a:
       name: "${friendly_name} Power CH 1"
       id: ch_1_power
@@ -129,7 +148,6 @@ sensor:
         - lambda: |-
             if (x < 0) return -1 * x;
             return x;
-        - delta: 5
     active_power_b:
       name: "${friendly_name} Power CH 2"
       id: ch_2_power
@@ -140,8 +158,7 @@ sensor:
         - lambda: |-
             if (x < 0) return -1 * x;
             return x;
-        - delta: 5
-    update_interval: 0.5s
+    update_interval: never
 
   - platform: total_daily_energy
     name: "${friendly_name} Total Daily Energy CH 1"
@@ -149,3 +166,17 @@ sensor:
   - platform: total_daily_energy
     name: "${friendly_name} Total Daily Energy CH 2"
     power_id: ch_2_power
+
+script:
+  - id: update_ade7953
+    mode: single
+    then:
+      - delay: 100ms
+      - while:
+          condition:
+            any:
+              - binary_sensor.is_on: ch_1_should_be_metered
+              - binary_sensor.is_on: ch_2_should_be_metered
+          then:
+            - component.update: energy_meter
+            - delay: 500ms
