@@ -38,6 +38,6 @@ cover:
         - homeassistant.action:
             action: persistent_notification.create
             data:
-              title: "Message from ${friendly_name}"
+              title: "Message from ${cover_name}"
             data_template:
-              message: "Malfunction detected "
+              message: "Malfunction detected"
