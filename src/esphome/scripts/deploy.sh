@@ -39,6 +39,9 @@ done
 echo ""
 
 echo "Checking devices for firmware update..."
+if [ ! -f checksums.json ]; then
+  echo '{}' > checksums.json
+fi
 echo '{}' > checksums_new.json
 updateNeeded=()
 # create checksums of the new configs
