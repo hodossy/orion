@@ -1,6 +1,6 @@
 ---
 substitutions:
-  device_version: "shelly2pm.2"
+  device_version: "shelly2pm.3"
   max_device_temperature: "90.0"
   max_channel_current: "8.0"
 
@@ -163,9 +163,11 @@ sensor:
   - platform: total_daily_energy
     name: "${friendly_name} Total Daily Energy CH 1"
     power_id: ch_1_power
+    method: left
   - platform: total_daily_energy
     name: "${friendly_name} Total Daily Energy CH 2"
     power_id: ch_2_power
+    method: left
 
 script:
   - id: update_ade7953
