@@ -1,12 +1,29 @@
 ---
 substitutions:
-  project_name: Light Switch 2CH
-  project_version: "0.0.1"
-  relay_count: "2"
+  relay_count: 2
+
+  light_1_id: light_1
+  light_1_name: ${friendly_name} L1
+  light_1_virtual: "false"
+
+  light_2_id: light_2
+  light_2_name: ${friendly_name} L2
+  light_2_virtual: "false"
 
 packages:
-  smarthomeyourself.tx-ultimate:
-    url: https://github.com/SmartHome-yourself/sonoff-tx-ultimate-for-esphome
-    file: tx_ultimate.yaml
-    ref: main
-  base: !include ../common/base.yaml
+  device: !include ./sonoff/tx-ultimate/sonoff-tx-ultimate-base.yaml
+  btn_action: !include ./sonoff/tx-ultimate/handle-release-2ch.yaml
+  light_1: !include
+    file: ../common/light.yaml
+    vars:
+      light_name: ${light_1_name}
+      light_id: ${light_1_id}
+      relay_id: relay_1
+      is_virtual: ${light_1_virtual}
+  light_2: !include
+    file: ../common/light.yaml
+    vars:
+      light_name: ${light_2_name}
+      light_id: ${light_2_id}
+      relay_id: relay_2
+      is_virtual: ${light_2_virtual}

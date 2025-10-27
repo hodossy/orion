@@ -1,0 +1,8 @@
+---
+script:
+  - id: handle_release
+    mode: restart
+    parameters:
+      pos: int
+    then:
+      - light.toggle: ${light_1_id}

@@ -1,0 +1,27 @@
+---
+substitutions:
+  project_name: Light
+  project_version: "1"
+
+light:
+  - platform: binary
+    name: ${light_name}
+    id: ${light_id}
+    output: ${light_id}_output
+
+output:
+  - platform: template
+    id: ${light_id}_output
+    type: binary
+    write_action:
+      if:
+        condition:
+          lambda: "return !${is_virtual};"
+        then:
+          - if:
+              condition:
+                light.is_on: ${light_id}
+              then:
+                - switch.turn_on: ${relay_id}
+              else:
+                - switch.turn_off: ${relay_id}
