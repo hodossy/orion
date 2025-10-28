@@ -368,36 +368,30 @@ uart:
 tx_ultimate_touch:
   id: tx_touch
   uart: my_uart
-
   on_press:
     - script.execute: led_on_touch
-
   on_release:
     - script.execute:
         id: handle_release
         pos: !lambda "return touch.x;"
-
   on_swipe_left:
     - script.execute: led_on_swipe_left
     - switch.turn_on: vibra_motor
     - binary_sensor.template.publish:
         id: swipe_left
         state: ON
-
   on_swipe_right:
     - script.execute: led_on_swipe_right
     - switch.turn_on: vibra_motor
     - binary_sensor.template.publish:
         id: swipe_right
         state: ON
-
   on_full_touch_release:
     - script.execute: led_on_full_touch
     - switch.turn_on: vibra_motor
     - binary_sensor.template.publish:
         id: multi_touch
         state: ON
-
   on_long_touch_release:
     - script.execute: led_on_long_touch
     - switch.turn_on: vibra_motor
@@ -421,24 +415,23 @@ script:
       - binary_sensor.template.publish:
           id: multi_touch
           state: OFF
-
   - id: refresh_nightlight
     mode: restart
     then:
       - if:
           all:
             - switch.is_on: nightlight_active
-            - lambda: |+
-                auto time = id(homeassistant_time).now();
-                return time.is_valid() && time.hour > 19 && time.minute > 29;
-            - sun.is_below_horizon:
+            - or:
+                - lambda: |+
+                    auto time = id(homeassistant_time).now();
+                    return time.is_valid() && time.hour > 19 && time.minute > 29;
+                - sun.is_below_horizon:
           then:
             - switch.turn_on:
                 id: nightlight
           else:
             - switch.turn_off:
                 id: nightlight
-
   - id: refresh_led_default
     mode: restart
     then:
@@ -452,14 +445,18 @@ script:
             - script.execute: led_off_button_left
       - if:
           condition:
-            lambda: "return (${relay_count}==3 && id(relay_2).state) || (${relay_count}==1 && id(relay_1).state);"
+            lambda: |-
+              return (${relay_count}==3 && id(relay_2).state)
+                  || (${relay_count}==1 && id(relay_1).state);
           then:
             - script.execute: led_on_button_middle
           else:
             - script.execute: led_off_button_middle
       - if:
           condition:
-            lambda: "return (${relay_count}==2 && id(relay_2).state) || (${relay_count}==3 && id(relay_3).state);"
+            lambda: |-
+              return (${relay_count}==2 && id(relay_2).state)
+                  || (${relay_count}==3 && id(relay_3).state);
           then:
             - script.execute: led_on_button_right
           else:
@@ -471,7 +468,6 @@ script:
             - script.execute: led_on_nightlight
           else:
             - light.turn_off: leds_nightlight
-
   - id: led_on_button_left
     mode: restart
     then:
@@ -481,7 +477,6 @@ script:
           red: !lambda "return id(button_color)[0]/100.0;"
           green: !lambda "return id(button_color)[1]/100.0;"
           blue: !lambda "return id(button_color)[2]/100.0;"
-
   - id: led_on_button_middle
     mode: restart
     then:
@@ -491,7 +486,6 @@ script:
           red: !lambda "return id(button_color)[0]/100.0;"
           green: !lambda "return id(button_color)[1]/100.0;"
           blue: !lambda "return id(button_color)[2]/100.0;"
-
   - id: led_on_button_right
     mode: restart
     then:
@@ -501,7 +495,6 @@ script:
           red: !lambda "return id(button_color)[0]/100.0;"
           green: !lambda "return id(button_color)[1]/100.0;"
           blue: !lambda "return id(button_color)[2]/100.0;"
-
   - id: led_off_button_left
     mode: restart
     then:
@@ -518,7 +511,6 @@ script:
           else:
             - light.turn_off:
                 id: leds_button_left
-
   - id: led_off_button_middle
     mode: restart
     then:
@@ -535,7 +527,6 @@ script:
           else:
             - light.turn_off:
                 id: leds_button_middle
-
   - id: led_off_button_right
     mode: restart
     then:
@@ -552,7 +543,6 @@ script:
           else:
             - light.turn_off:
                 id: leds_button_right
-
   - id: led_on_nightlight
     mode: restart
     then:
@@ -562,13 +552,11 @@ script:
           red: !lambda "return id(nightlight_color)[0]/100.0;"
           green: !lambda "return id(nightlight_color)[1]/100.0;"
           blue: !lambda "return id(nightlight_color)[2]/100.0;"
-
   - id: led_on_release
     mode: restart
     then:
       - light.turn_off:
           id: leds_top
-
   - id: led_on_touch
     mode: restart
     then:
@@ -581,7 +569,6 @@ script:
           effect: ${touch_effect}
       - delay: 6s
       - script.execute: refresh_led_default
-
   - id: led_on_swipe_left
     mode: restart
     then:
@@ -592,7 +579,6 @@ script:
           green: !lambda "return id(swipe_left_color)[1]/100.0;"
           blue: !lambda "return id(swipe_left_color)[2]/100.0;"
           effect: ${swipe_left_effect}
-
   - id: led_on_swipe_right
     mode: restart
     then:
@@ -603,7 +589,6 @@ script:
           green: !lambda "return id(swipe_right_color)[1]/100.0;"
           blue: !lambda "return id(swipe_right_color)[2]/100.0;"
           effect: ${swipe_right_effect}
-
   - id: led_on_full_touch
     mode: restart
     then:
@@ -614,7 +599,6 @@ script:
           green: !lambda "return id(multi_touch_color)[1]/100.0;"
           blue: !lambda "return id(multi_touch_color)[2]/100.0;"
           effect: ${multi_touch_effect}
-
   - id: led_on_long_touch
     mode: restart
     then:
