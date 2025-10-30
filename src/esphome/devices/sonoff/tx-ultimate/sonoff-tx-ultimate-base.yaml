@@ -2,10 +2,6 @@
 substitutions:
   device_version: "sonoff_tx_ultimate.1"
 
-  toggle_relay_1_on_touch: "true"
-  toggle_relay_2_on_touch: "true"
-  toggle_relay_3_on_touch: "true"
-
   vibra_time: 150ms
   button_on_time: 500ms
 
@@ -31,11 +27,11 @@ substitutions:
 
   swipe_left_brightness: "1"
   swipe_left_color: "{0,100,0}"
-  swipe_left_effect: "Wipe"
+  swipe_left_effect: "Wipe Reverse"
 
   swipe_right_brightness: "1"
   swipe_right_color: "{100,0,70}"
-  swipe_right_effect: "Wipe Reverse"
+  swipe_right_effect: "Wipe"
 
   relay_1_pin: GPIO18
   relay_2_pin: GPIO17
@@ -70,8 +66,8 @@ esphome:
     priority: -100
     then:
       - script.execute: publish_sensors_off
-      - script.execute: refresh_led_default
       - script.execute: refresh_nightlight
+      - script.execute: refresh_led_default
 
 sun:
   on_sunrise:
@@ -143,7 +139,6 @@ binary_sensor:
           id: swipe_left
           state: OFF
       - script.execute: refresh_led_default
-
   - platform: template
     name: Swipe right
     id: swipe_right
@@ -153,7 +148,6 @@ binary_sensor:
           id: swipe_right
           state: OFF
       - script.execute: refresh_led_default
-
   - platform: template
     name: Multi Touch
     id: multi_touch
@@ -163,7 +157,6 @@ binary_sensor:
           id: multi_touch
           state: OFF
       - script.execute: refresh_led_default
-
   - platform: template
     name: Long Press
     id: long_press
@@ -186,7 +179,6 @@ switch:
     on_turn_off:
       then:
         - script.execute: refresh_led_default
-
   - platform: gpio
     id: relay_2
     internal: true
@@ -198,7 +190,6 @@ switch:
     on_turn_off:
       then:
         - script.execute: refresh_led_default
-
   - platform: gpio
     id: relay_3
     internal: true
@@ -210,7 +201,6 @@ switch:
     on_turn_off:
       then:
         - script.execute: refresh_led_default
-
   - platform: gpio
     id: vibra_motor
     pin: ${vibra_motor_pin}
@@ -219,13 +209,11 @@ switch:
     on_turn_on:
       - delay: ${vibra_time}
       - switch.turn_off: vibra_motor
-
   - platform: gpio
     id: power_amplifier
     pin: ${pa_power_pin}
     internal: true
     restore_mode: ALWAYS_ON
-
   - platform: gpio
     id: touch_panel_power
     internal: true
@@ -234,7 +222,6 @@ switch:
       number: ${touchpanel_power_pin}
       inverted: true
     restore_mode: ALWAYS_ON
-
   - platform: template
     id: nightlight
     internal: true
@@ -245,7 +232,6 @@ switch:
     on_turn_off:
       then:
         - script.execute: refresh_led_default
-
   - platform: template
     name: ${nightlight_name}
     id: nightlight_active
@@ -278,11 +264,9 @@ light:
           name: "Pulse"
           transition_length: 1.4s
           update_interval: 1s
-
     on_turn_off:
       then:
         - script.execute: refresh_led_default
-
   - platform: partition
     id: leds_button_right
     internal: true
@@ -304,7 +288,6 @@ light:
       - id: leds
         from: 11
         to: 11
-
   - platform: partition
     id: leds_nightlight
     internal: true
@@ -327,7 +310,6 @@ light:
       - id: leds_top
         from: 0
         to: 6
-
   - platform: partition
     id: leds_top
     internal: true
