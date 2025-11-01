@@ -1,0 +1,26 @@
+---
+script:
+  - id: handle_release
+    mode: restart
+    parameters:
+      pos: int
+    then:
+      - light.toggle: ${light_1_id}
+  - id: refresh_led_default
+    mode: restart
+    then:
+      - light.turn_off: leds_top
+      - if:
+          condition:
+            switch.is_on: ${relay_1_id}
+          then:
+            - script.execute: led_on_button_middle
+          else:
+            - script.execute: led_off_button_middle
+      - if:
+          condition:
+            lambda: "return id(nightlight).state;"
+          then:
+            - script.execute: led_on_nightlight
+          else:
+            - light.turn_off: leds_nightlight

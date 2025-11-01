@@ -1,0 +1,13 @@
+---
+switch:
+  - platform: gpio
+    id: ${relay_id}
+    internal: true
+    pin: ${relay_pin}
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      then:
+        - script.execute: refresh_led_default
+    on_turn_off:
+      then:
+        - script.execute: refresh_led_default

@@ -1,22 +1,32 @@
 ---
 substitutions:
-  relay_count: 3
+  relay_1_id: relay_1
+  relay_2_id: relay_2
+  relay_3_id: relay_3
 
   light_1_id: light_1
   light_1_name: ${friendly_name} L1
   light_1_virtual: "false"
+  light_1_relay: ${relay_1_id}
 
   light_2_id: light_2
   light_2_name: ${friendly_name} L2
   light_2_virtual: "false"
+  light_2_relay: ${relay_2_id}
 
   light_3_id: light_3
   light_3_name: ${friendly_name} L3
   light_3_virtual: "false"
+  light_3_relay: ${relay_3_id}
 
 packages:
-  device: !include ./sonoff/tx-ultimate/sonoff-tx-ultimate-base.yaml
-  btn_action: !include ./sonoff/tx-ultimate/handle-release-3ch.yaml
+  device: !include ./sonoff/tx-ultimate/base.yaml
+  scripts: !include ./sonoff/tx-ultimate/scripts-3ch.yaml
+  switch_1: !include
+    file: ./sonoff/tx-ultimate/switch.yaml
+    vars:
+      relay_id: ${relay_1_id}
+      relay_pin: ${relay_1_pin}
   light_1: !include
     file: ../common/light.yaml
     vars:
@@ -24,6 +34,11 @@ packages:
       light_id: ${light_1_id}
       relay_id: relay_1
       is_virtual: ${light_1_virtual}
+  switch_2: !include
+    file: ./sonoff/tx-ultimate/switch.yaml
+    vars:
+      relay_id: ${relay_2_id}
+      relay_pin: ${relay_2_pin}
   light_2: !include
     file: ../common/light.yaml
     vars:
@@ -31,6 +46,11 @@ packages:
       light_id: ${light_2_id}
       relay_id: relay_2
       is_virtual: ${light_2_virtual}
+  switch_3: !include
+    file: ./sonoff/tx-ultimate/switch.yaml
+    vars:
+      relay_id: ${relay_3_id}
+      relay_pin: ${relay_3_pin}
   light_3: !include
     file: ../common/light.yaml
     vars:

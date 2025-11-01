@@ -1,0 +1,52 @@
+---
+script:
+  - id: handle_release
+    mode: restart
+    parameters:
+      pos: int
+    then:
+      - if:
+          condition:
+            lambda: "return pos <= 3;"
+          then:
+            - light.toggle: ${light_1_id}
+          else:
+            - if:
+                condition:
+                  lambda: "return pos <= 7;"
+                then:
+                  - light.toggle: ${light_2_id}
+                else:
+                  - light.toggle: ${light_3_id}
+  - id: refresh_led_default
+    mode: restart
+    then:
+      - light.turn_off: leds_top
+      - if:
+          condition:
+            switch.is_on: ${relay_1_id}
+          then:
+            - script.execute: led_on_button_left
+          else:
+            - script.execute: led_off_button_left
+      - if:
+          condition:
+            switch.is_on: ${relay_2_id}
+          then:
+            - script.execute: led_on_button_middle
+          else:
+            - script.execute: led_off_button_middle
+      - if:
+          condition:
+            switch.is_on: ${relay_3_id}
+          then:
+            - script.execute: led_on_button_right
+          else:
+            - script.execute: led_off_button_right
+      - if:
+          condition:
+            lambda: "return id(nightlight).state;"
+          then:
+            - script.execute: led_on_nightlight
+          else:
+            - light.turn_off: leds_nightlight
