@@ -1,0 +1,73 @@
+---
+substitutions:
+  peer_1: "off"
+  peer_2: "off"
+
+switch:
+  - platform: template
+    id: send_state_change
+    internal: true
+    optimistic: true
+    restore_mode: ALWAYS_ON
+
+light:
+  - id: !extend ${light_id}
+    on_turn_on:
+      - if:
+          condition:
+            switch.is_on: send_state_change
+          then:
+            - if:
+                condition:
+                  lambda: return "${peer_1}" != "off"
+                then:
+                  - espnow.send:
+                      address: ${peer_1}
+                      data: ON
+            - if:
+                condition:
+                  lambda: return "${peer_2}" != "off"
+                then:
+                  - espnow.send:
+                      address: ${peer_2}
+                      data: ON
+            - switch.template.publish:
+                id: send_state_change
+                state: ON
+    on_turn_off:
+      - if:
+          condition:
+            switch.is_on: send_state_change
+          then:
+            - if:
+                condition:
+                  lambda: return "${peer_1}" != "off"
+                then:
+                  - espnow.send:
+                      address: ${peer_1}
+                      data: OFF
+            - if:
+                condition:
+                  lambda: return "${peer_2}" != "off"
+                then:
+                  - espnow.send:
+                      address: ${peer_2}
+                      data: OFF
+            - switch.template.publish:
+                id: send_state_change
+                state: ON
+
+espnow:
+  auto_add_peer: false
+  peers: ${peers}
+  on_receive:
+    - switch.template.publish:
+        id: send_state_change
+        state: OFF
+    - if:
+        condition:
+          lambda: return strncmp(data, "ON", 2) == 0;
+        then:
+          - light.turn_on: ${light_id}
+        else:
+          - light.turn_off: ${light_id}
