@@ -1,4 +1,10 @@
-# Wenmos ESP32-S2 Mini chip info
+# Wemos S2 Mini chip info
+
+```
+Chip type:          ESP32-S2FNR2 (revision v0.0)
+Features:           Wi-Fi, Single Core, 240MHz, Embedded Flash 4MB, Embedded PSRAM 2MB, ADC and temperature sensor calibration in BLK2 of eFuse V2
+Crystal frequency:  40MHz
+```
 
 ## Flashing ESPHome or WLED
 
@@ -16,6 +22,8 @@ For some reason the web installer is not working for this one, even if the initi
 4. Connect the device to an USB port
 5. Wait a bit, then press the reset button for a brief second and release it
 6. While still holding the boot button, run `esptool write-flash -e 0x00000 <path-to-factory-bin>`
+
+After the first successful flash, it is enough to power on the device while the boot button is pressed to put the device into flash mode.
 
 #### Install WLED
 
