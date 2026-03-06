@@ -1,0 +1,5 @@
+---
+substitutions: {}
+
+packages:
+  device: !include ./esp32/wemos-s2-mini-base.yaml

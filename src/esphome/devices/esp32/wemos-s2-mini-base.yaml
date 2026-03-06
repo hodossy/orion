@@ -1,0 +1,12 @@
+---
+substitutions:
+  device_version: "wemoss2mini.1"
+
+packages:
+  base: !include ../../common/base.yaml
+  time: !include ../../common/time.yaml
+
+esp32:
+  board: lolin_s2_mini
+  framework:
+    type: esp-idf
