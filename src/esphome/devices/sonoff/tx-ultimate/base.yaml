@@ -63,11 +63,11 @@ esp32:
 
 esphome:
   on_boot:
-    priority: -100
-    then:
-      - script.execute: publish_sensors_off
-      - script.execute: refresh_nightlight
-      - script.execute: refresh_led_default
+    - priority: -100
+      then:
+        - script.execute: publish_sensors_off
+        - script.execute: refresh_nightlight
+        - script.execute: refresh_led_default
 
 sun:
   on_sunrise:
