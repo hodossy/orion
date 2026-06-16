@@ -2,3 +2,5 @@ src/secrets.yaml
 
 venv
 
+*.bin
+
