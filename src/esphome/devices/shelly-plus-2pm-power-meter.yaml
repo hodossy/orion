@@ -1,0 +1,6 @@
+---
+substitutions:
+  restore_mode: ALWAYS_ON
+
+packages:
+  device: !include ./shelly/shelly-plus-2pm-base.yaml
