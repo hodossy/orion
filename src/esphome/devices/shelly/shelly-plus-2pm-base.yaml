@@ -3,7 +3,8 @@ substitutions:
   device_version: "shelly2pm.4"
   max_device_temperature: "90.0"
   max_channel_current: "8.0"
-  restore_mode: ALWAYS_OFF
+  ch_1_restore_mode: ALWAYS_OFF
+  ch_2_restore_mode: ALWAYS_OFF
 
 packages:
   base: !include ../../common/base.yaml
@@ -12,7 +13,7 @@ packages:
 esp32:
   board: esp32dev
   framework:
-    type: arduino
+    type: esp-idf
 
 # internal Shelly Switch Outputs
 switch:
@@ -20,12 +21,12 @@ switch:
     id: ch_1_switch
     pin: GPIO13
     internal: true
-    restore_mode: ${restore_mode}
+    restore_mode: ${ch_1_restore_mode}
   - platform: gpio
     id: ch_2_switch
     pin: GPIO12
     internal: true
-    restore_mode: ${restore_mode}
+    restore_mode: ${ch_2_restore_mode}
 
 i2c:
   sda: GPIO26
