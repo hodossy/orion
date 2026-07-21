@@ -20,15 +20,11 @@ switch:
     pin: GPIO13
     internal: true
     restore_mode: ALWAYS_OFF
-    interlock: [ch_2_switch]
-    interlock_wait_time: 200ms
   - platform: gpio
     id: ch_2_switch
     pin: GPIO12
     internal: true
     restore_mode: ALWAYS_OFF
-    interlock: [ch_1_switch]
-    interlock_wait_time: 200ms
 
 i2c:
   sda: GPIO26

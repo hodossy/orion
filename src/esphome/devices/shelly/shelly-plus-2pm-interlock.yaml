@@ -1,0 +1,8 @@
+---
+switch:
+  - id: !extend ch_1_switch
+    interlock: [ch_2_switch]
+    interlock_wait_time: 200ms
+  - id: !extend ch_2_switch
+    interlock: [ch_1_switch]
+    interlock_wait_time: 200ms

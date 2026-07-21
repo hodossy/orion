@@ -8,4 +8,5 @@ substitutions:
 
 packages:
   device: !include ./shelly/shelly-plus-2pm-base.yaml
+  interlock: !include ./shelly/shelly-plus-2pm-interlock.yaml
   use_case: !include ../common/cover.yaml
