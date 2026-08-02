@@ -1,6 +1,6 @@
 ---
 substitutions:
-  device_version: "sonoff_tx_ultimate.1"
+  device_version: "sonoff_tx_ultimate.2"
 
   vibra_time: 150ms
   button_on_time: 500ms
@@ -333,7 +333,7 @@ script:
           condition:
             light.is_on: leds
           then:
-            - light.turn_on: leds
+            - script.execute: led_on_leds
           else:
             - if:
                 condition:
@@ -371,6 +371,15 @@ script:
     then:
       - light.turn_off:
           id: leds_top
+  - id: led_on_leds
+    mode: restart
+    then:
+      - light.turn_on:
+          id: leds_top
+          brightness: !lambda "return id(leds).current_values.get_brightness();"
+          red: !lambda "return id(leds).current_values.get_red();"
+          green: !lambda "return id(leds).current_values.get_green();"
+          blue: !lambda "return id(leds).current_values.get_blue();"
   - id: led_on_touch
     mode: restart
     then:
