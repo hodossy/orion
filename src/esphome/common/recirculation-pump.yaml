@@ -1,0 +1,21 @@
+---
+switch:
+  - platform: copy
+    source_id: ${relay_id}
+    id: ${pump_id}
+    name: ${pump_name}
+    on_turn_on:
+      - script.execute:
+          id: stop_${pump_id}_after_delay
+          delay_s: ${pump_run_length}
+    on_turn_off:
+      - script.stop: stop_${pump_id}_after_delay
+
+script:
+  - id: stop_${pump_id}_after_delay
+    mode: restart
+    parameters:
+      delay_s: int
+    then:
+      - delay: !lambda return delay_s * 1000;
+      - switch.turn_off: ${pump_id}

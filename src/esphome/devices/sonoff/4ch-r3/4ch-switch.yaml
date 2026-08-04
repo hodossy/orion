@@ -1,0 +1,19 @@
+---
+binary_sensor:
+  - platform: gpio
+    id: ${relay_id}_btn
+    internal: true
+    pin:
+      number: ${btn_pin}
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    on_press:
+      - switch.toggle: ${relay_id}
+
+switch:
+  - platform: gpio
+    internal: true
+    pin: ${relay_pin}
+    id: ${relay_id}

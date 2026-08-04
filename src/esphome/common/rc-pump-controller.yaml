@@ -1,0 +1,27 @@
+---
+substitutions:
+  project_name: Recirculation Pump Controller
+  project_version: "1"
+
+packages:
+  pump_1: !include
+    file: ./recirculation-pump.yaml
+    vars:
+      relay_id: ${relay_1_id}
+      pump_id: ${pump_1_id}
+      pump_name: ${pump_1_name}
+      pump_run_length: ${pump_1_run_length}
+  pump_2: !include
+    file: ./recirculation-pump.yaml
+    vars:
+      relay_id: ${relay_2_id}
+      pump_id: ${pump_2_id}
+      pump_name: ${pump_2_name}
+      pump_run_length: ${pump_2_run_length}
+  pump_3: !include
+    file: ./recirculation-pump.yaml
+    vars:
+      relay_id: ${relay_3_id}
+      pump_id: ${pump_3_id}
+      pump_name: ${pump_3_name}
+      pump_run_length: ${pump_3_run_length}

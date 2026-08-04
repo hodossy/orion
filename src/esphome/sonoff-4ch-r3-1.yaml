@@ -1,0 +1,19 @@
+---
+substitutions:
+  name: "sonoff-4ch-r3-1"
+  friendly_name: Sonoff 4CH R3 1
+
+  pump_1_id: pump_1
+  pump_2_id: pump_2
+  pump_3_id: pump_3
+
+  pump_1_name: "Kék fürdő keringető szivattyú"
+  pump_2_name: "Zöld fürdő keringető szivattyú"
+  pump_3_name: "Konyha keringető szivattyú"
+
+  pump_1_run_length: 120
+  pump_2_run_length: 120
+  pump_3_run_length: 150
+
+packages:
+  base: !include ./devices/sonoff-4ch-r3-recirculation-pump.yaml

@@ -1,0 +1,67 @@
+---
+substitutions:
+  device_version: "sonoff_4ch_r3.1"
+
+  relay_1_id: relay_1
+  relay_2_id: relay_2
+  relay_3_id: relay_3
+  relay_4_id: relay_4
+
+  relay_1_pin: GPIO12
+  relay_2_pin: GPIO5
+  relay_3_pin: GPIO4
+  relay_4_pin: GPIO15
+
+  btn_1_pin: GPIO0
+  btn_2_pin: GPIO9
+  btn_3_pin: GPIO10
+  btn_4_pin: GPIO14
+
+  status_led_pin: GPIO13
+
+packages:
+  base: !include ../../../common/base.yaml
+  relay_1: !include
+    file: ./4ch-switch.yaml
+    vars:
+      relay_id: ${relay_1_id}
+      relay_pin: ${relay_1_pin}
+      btn_pin: ${btn_1_pin}
+  relay_2: !include
+    file: ./4ch-switch.yaml
+    vars:
+      relay_id: ${relay_2_id}
+      relay_pin: ${relay_2_pin}
+      btn_pin: ${btn_2_pin}
+  relay_3: !include
+    file: ./4ch-switch.yaml
+    vars:
+      relay_id: ${relay_3_id}
+      relay_pin: ${relay_3_pin}
+      btn_pin: ${btn_3_pin}
+  relay_4: !include
+    file: ./4ch-switch.yaml
+    vars:
+      relay_id: ${relay_4_id}
+      relay_pin: ${relay_4_pin}
+      btn_pin: ${btn_4_pin}
+
+esp8266:
+  board: esp01_1m
+
+binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+
+output:
+  # Register the blue LED as a dimmable output ....
+  - platform: esp8266_pwm
+    id: blue_led
+    pin: ${status_led_pin}
+    inverted: true
+
+light:
+  # ... and then make a light out of it.
+  - platform: monochromatic
+    name: "${friendly_name} Status LED"
+    output: blue_led
