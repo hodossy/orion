@@ -1,0 +1,8 @@
+---
+substitutions: {}
+
+switch:
+  - platform: copy
+    id: ${switch_id}
+    name: ${switch_name}
+    source_id: ${source_id}

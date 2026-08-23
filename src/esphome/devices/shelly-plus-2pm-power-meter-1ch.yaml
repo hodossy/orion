@@ -1,0 +1,10 @@
+---
+substitutions:
+  switch_id: "relay_1"
+  switch_name: "Ch 1"
+  source_id: "ch_1_switch"
+
+packages:
+  device: !include ./shelly/shelly-plus-2pm-base.yaml
+  use_case: !include ../common/power-meter.yaml
+  switch: !include ../common/switch.yaml

@@ -3,8 +3,12 @@ substitutions:
   device_version: "shelly2pm.4"
   max_device_temperature: "90.0"
   max_channel_current: "8.0"
+
   ch_1_restore_mode: ALWAYS_OFF
   ch_2_restore_mode: ALWAYS_OFF
+
+  ch_1_total_daily_energy_name: "${friendly_name} Total Daily Energy CH 1"
+  ch_2_total_daily_energy_name: "${friendly_name} Total Daily Energy CH 2"
 
 packages:
   base: !include ../../common/base.yaml
@@ -14,6 +18,8 @@ esp32:
   board: esp32dev
   framework:
     type: esp-idf
+
+esphome:
   on_boot:
     - priority: -100
       then:
@@ -163,11 +169,11 @@ sensor:
     update_interval: never
 
   - platform: total_daily_energy
-    name: "${friendly_name} Total Daily Energy CH 1"
+    name: "${ch_1_total_daily_energy_name}"
     power_id: ch_1_power
     method: left
   - platform: total_daily_energy
-    name: "${friendly_name} Total Daily Energy CH 2"
+    name: "${ch_2_total_daily_energy_name}"
     power_id: ch_2_power
     method: left
 

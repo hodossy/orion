@@ -3,6 +3,9 @@ substitutions:
   name: "shelly-plus-2pm-24"
   friendly_name: Shelly Plus 2PM 24
   ch_1_restore_mode: ALWAYS_ON
+  switch_id: "water_heater_relay" 
+  switch_name: "Melegvíz tartály"
+
 
 packages:
-  base: !include ./devices/shelly-plus-2pm-power-meter.yaml
+  base: !include ./devices/shelly-plus-2pm-power-meter-1ch.yaml

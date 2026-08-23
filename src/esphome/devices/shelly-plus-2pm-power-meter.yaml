@@ -1,6 +1,0 @@
----
-substitutions: {}
-
-packages:
-  device: !include ./shelly/shelly-plus-2pm-base.yaml
-  use_case: !include ../common/power-meter.yaml

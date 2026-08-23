@@ -1,0 +1,26 @@
+---
+substitutions:
+  switch_1_id: "relay_1"
+  switch_2_id: "relay_2"
+
+  switch_1_name: "Ch 1"
+  switch_2_name: "Ch 2"
+
+  source_1_id: "ch_1_switch"
+  source_2_id: "ch_2_switch"
+
+packages:
+  device: !include ./shelly/shelly-plus-2pm-base.yaml
+  use_case: !include ../common/power-meter.yaml
+  switch_1: !include
+    file: ../common/switch.yaml
+    vars:
+      switch_id: ${switch_1_id}
+      switch_name: ${switch_1_name}
+      source_id: ${source_1_id}
+  switch_2: !include
+    file: ../common/switch.yaml
+    vars:
+      switch_id: ${switch_2_id}
+      switch_name: ${switch_2_name}
+      source_id: ${source_2_id}
