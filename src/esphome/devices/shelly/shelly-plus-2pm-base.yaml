@@ -3,6 +3,15 @@ substitutions:
   device_version: "shelly2pm.4"
   max_device_temperature: "90.0"
   max_channel_current: "8.0"
+  # for inductive loads a current spike is expected and normal
+  # increase the value to 1 or 2 max to avoid actual overloads
+  allowed_overload: "0"
+
+  ch_1_max_current: "${max_channel_current}"
+  ch_2_max_current: "${max_channel_current}"
+
+  ch_1_allowed_overload: "${allowed_overload}"
+  ch_2_allowed_overload: "${allowed_overload}"
 
   ch_1_restore_mode: ALWAYS_OFF
   ch_2_restore_mode: ALWAYS_OFF
@@ -24,6 +33,16 @@ esphome:
     - priority: -100
       then:
         - script.execute: update_ade7953
+
+globals:
+  - id: ch_1_switch_overload
+    type: int
+    restore_value: false
+    initial_value: "0"
+  - id: ch_2_switch_overload
+    type: int
+    restore_value: false
+    initial_value: "0"
 
 # internal Shelly Switch Outputs
 switch:
@@ -121,15 +140,24 @@ sensor:
       accuracy_decimals: 2
       icon: mdi:current-ac
       on_value_range:
-        - above: ${max_channel_current}
+        - above: ${ch_1_max_current}
           then:
-            - switch.turn_off: ch_1_switch
+            - lambda: "id(ch_1_switch_overload) += 1;"
+            - if:
+                condition: 
+                  lambda: "return id(ch_1_switch_overload) > ${ch_1_allowed_overload};"
+                then:
+                  - switch.turn_off: ch_1_switch
+                  - lambda: "id(ch_1_switch_overload) = 0;"
             - homeassistant.action:
                 action: persistent_notification.create
                 data:
                   title: "Message from ${friendly_name}"
                 data_template:
-                  message: "Turned off because current on CH 1 exceeded ${max_channel_current} A"
+                  message: "Turned off because current on CH 1 exceeded ${ch_1_max_current} A"
+        - below: ${ch_1_max_current}
+          then:
+            - lambda: "id(ch_1_switch_overload) = 0;"
     current_b:
       id: ch_2_current
       name: "${friendly_name} Current CH 2"
@@ -137,15 +165,24 @@ sensor:
       accuracy_decimals: 2
       icon: mdi:current-ac
       on_value_range:
-        - above: ${max_channel_current}
+        - above: ${ch_2_max_current}
           then:
-            - switch.turn_off: ch_2_switch
+            - lambda: "id(ch_2_switch_overload) += 1;"
+            - if:
+                condition: 
+                  lambda: "return id(ch_2_switch_overload) > ${ch_2_allowed_overload};"
+                then:
+                  - switch.turn_off: ch_2_switch
+                  - lambda: "id(ch_2_switch_overload) = 0;"
             - homeassistant.action:
                 action: persistent_notification.create
                 data:
                   title: "Message from ${friendly_name}"
                 data_template:
-                  message: "Turned off because current on CH 2 exceeded ${max_channel_current} A"
+                  message: "Turned off because current on CH 2 exceeded ${ch_2_max_current} A"
+        - below: ${ch_2_max_current}
+          then:
+            - lambda: "id(ch_2_switch_overload) = 0;"
     active_power_a:
       name: "${friendly_name} Power CH 1"
       id: ch_1_power
