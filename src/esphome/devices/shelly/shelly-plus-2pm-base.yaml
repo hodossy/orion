@@ -149,12 +149,12 @@ sensor:
                 then:
                   - switch.turn_off: ch_1_switch
                   - lambda: "id(ch_1_switch_overload) = 0;"
-            - homeassistant.action:
-                action: persistent_notification.create
-                data:
-                  title: "Message from ${friendly_name}"
-                data_template:
-                  message: "Turned off because current on CH 1 exceeded ${ch_1_max_current} A"
+                  - homeassistant.action:
+                      action: persistent_notification.create
+                      data:
+                        title: "Message from ${friendly_name}"
+                      data_template:
+                        message: "Turned off because current on CH 1 exceeded ${ch_1_max_current} A"
         - below: ${ch_1_max_current}
           then:
             - lambda: "id(ch_1_switch_overload) = 0;"
@@ -174,12 +174,12 @@ sensor:
                 then:
                   - switch.turn_off: ch_2_switch
                   - lambda: "id(ch_2_switch_overload) = 0;"
-            - homeassistant.action:
-                action: persistent_notification.create
-                data:
-                  title: "Message from ${friendly_name}"
-                data_template:
-                  message: "Turned off because current on CH 2 exceeded ${ch_2_max_current} A"
+                  - homeassistant.action:
+                      action: persistent_notification.create
+                      data:
+                        title: "Message from ${friendly_name}"
+                      data_template:
+                        message: "Turned off because current on CH 2 exceeded ${ch_2_max_current} A"
         - below: ${ch_2_max_current}
           then:
             - lambda: "id(ch_2_switch_overload) = 0;"

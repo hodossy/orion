@@ -6,7 +6,7 @@ substitutions:
   switch_name: "Melegvíz tartály"
   ch_1_restore_mode: ALWAYS_ON
   ch_1_max_current: "10.0"
-  ch_1_allowed_overload: 2
+  ch_1_allowed_overload: 1
 
 packages:
   base: !include ./devices/shelly-plus-2pm-power-meter-1ch.yaml
