@@ -1,4 +1,5 @@
 [tools]
+jq = "1.8.2"
 pipx = "1.16.6"
 "pipx:esphome" = "2026.7.4"
 python = "3.14.4"

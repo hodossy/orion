@@ -15,3 +15,7 @@ Contains device specific code in subfolders (Shelly, Sonoff, sensors, etc...), a
 ### Final configurations
 
 Every configuration file, from which a firmware is uploaded to a device, goes to the root of the folder (at least for now).
+
+## Onboarding of new devices
+
+When a new device is added, it should be added to the `devices` package, and a new configuration file should be created in the root of the folder. The configuration file should be named after the device, and should contain all the necessary information for the device to work properly. When the device is to Home Assistant, don't forget to enabled the device to create persistent notifications.
