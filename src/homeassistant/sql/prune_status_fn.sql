@@ -1,10 +1,8 @@
-CREATE FUNCTION prune_status(start_date TEXT, days INT DEFAULT 1, entity_regex TEXT[] DEFAULT ARRAY['%2pm\_%\_voltage%','%2pm\_%\_current%','%2pm\_%\_power%','%2pm\_%\_total\_daily\_energy%','%futes%'], bin_size TEXT DEFAULT '1 minute') RETURNS INT AS $$
+CREATE OR REPLACE FUNCTION prune_status(start_date TEXT, days INT DEFAULT 1, entity_regex TEXT[] DEFAULT ARRAY['%2pm\_%\_voltage%','%2pm\_%\_current%','%2pm\_%\_power%','%2pm\_%\_total\_daily\_energy%','%futes%'], bin_size TEXT DEFAULT '1 minute') RETURNS INT AS $$
 DECLARE
     rows_deleted INT;
 BEGIN
-  BEGIN
-    RAISE NOTICE '[%] Preparing metadata...', NOW();
-  END;
+  RAISE NOTICE '[%] Preparing metadata...', clock_timestamp();
 
   ------------------------------------------------------------
   ------------ CREATE TIME RANGE DEFINITION TABLE ------------
@@ -22,9 +20,7 @@ BEGIN
     FROM _timeref
   );
 
-  BEGIN
-    RAISE NOTICE '[%] Selected timerange: % - %', NOW(), (SELECT to_timestamp(_start) FROM _timerange), (SELECT to_timestamp(_end) FROM _timerange);
-  END;
+  RAISE NOTICE '[%] Selected timerange: % - %', clock_timestamp(), (SELECT to_timestamp(_start) FROM _timerange), (SELECT to_timestamp(_end) FROM _timerange);
 
   ------------------------------------------------------------
   --------- SELECT ENTITIES WITH TOO FREQUENT STATES ---------
@@ -37,10 +33,8 @@ BEGIN
     where states_meta.entity_id like ANY (entity_regex)
   );
 
-  BEGIN
-    RAISE NOTICE '[%] Selected entities: %', NOW(), (SELECT string_agg(entity_id, ', ') FROM _states_meta);
-    RAISE NOTICE '[%] Selecting data to prune...', NOW();
-  END;
+  RAISE NOTICE '[%] Selected entities: %', clock_timestamp(), (SELECT string_agg(entity_id, ', ') FROM _states_meta);
+  RAISE NOTICE '[%] Selecting data to prune...', clock_timestamp();
 
   ------------------------------------------------------------
   -- CREATE TIME BUCKETS FOR SELECTED ENTITIES AND INTERVAL --
@@ -62,10 +56,8 @@ BEGIN
     )
   );
 
-  BEGIN
-    RAISE NOTICE '[%] Done. Selected % entries', NOW(), (SELECT count(*) FROM _states);
-    RAISE NOTICE '[%] Selecting rows to keep...', NOW();
-  END;
+  RAISE NOTICE '[%] Done. Selected % entries', clock_timestamp(), (SELECT count(*) FROM _states);
+  RAISE NOTICE '[%] Selecting rows to keep...', clock_timestamp();
 
   ------------------------------------------------------------
   -------- KEEP LAST VALUE FOR EACH ENTITY AND BUCKET --------
@@ -111,34 +103,26 @@ BEGIN
         _kept_states.old_state_id IS NULL
     AND _kept_states.metadata_id = _first_dropped_rows.metadata_id;
 
-  BEGIN
-    RAISE NOTICE '[%] Done. Selected % rows', NOW(), (SELECT count(*) FROM _kept_states);
-  END;
+  RAISE NOTICE '[%] Done. Selected % rows', clock_timestamp(), (SELECT count(*) FROM _kept_states);
 
   ------------------------------------------------------------
   -------- UPDATE KEPT ROWS WITH PROPER OLD STATE ID ---------
   ------------------------------------------------------------
 
-  BEGIN
-    RAISE NOTICE '[%] Updating old_state_ids of test data...', NOW();
-  END;
+  RAISE NOTICE '[%] Updating old_state_ids of test data...', clock_timestamp();
 
   UPDATE states
   SET old_state_id = _kept_states.old_state_id
   FROM _kept_states
   WHERE states.state_id = _kept_states.state_id;
 
-  BEGIN
-    RAISE NOTICE '[%] Done.', NOW();
-  END;
+  RAISE NOTICE '[%] Done.', clock_timestamp();
 
   ------------------------------------------------------------
   -------- DELETE ALL OTHER STATES IN GIVEN INTERVAL ---------
   ------------------------------------------------------------
 
-  BEGIN
-    RAISE NOTICE '[%] Deleting unnecessary data...', NOW();
-  END;
+  RAISE NOTICE '[%] Deleting unnecessary data...', clock_timestamp();
 
   DELETE
   FROM states
@@ -150,9 +134,7 @@ BEGIN
   );
   GET DIAGNOSTICS rows_deleted = ROW_COUNT;
 
-  BEGIN
-    RAISE NOTICE '[%] Deleted % rows.', NOW(), rows_deleted;
-  END;
+  RAISE NOTICE '[%] Deleted % rows.', clock_timestamp(), rows_deleted;
 
   ------------------------------------------------------------
   ---------------- CLEAN UP TEMPORARY TABLES -----------------

@@ -3,7 +3,7 @@
  * as aggregating helpers are updated at each component update,
  * effectively doubling the number of rows inserted.
 **/
-DO $$ BEGIN RAISE NOTICE '[%] Preparing metadata...', NOW(); END$$;
+RAISE NOTICE '[%] Preparing metadata...', clock_timestamp();
 
 ------------------------------------------------------------
 ------------ CREATE TIME RANGE DEFINITION TABLE ------------
@@ -25,7 +25,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS _timerange as (
   FROM _timeref
 );
 
-DO $$ BEGIN RAISE NOTICE '[%] Selected timerange: % - %', NOW(), (SELECT to_timestamp(_start) FROM _timerange), (SELECT to_timestamp(_end) FROM _timerange); END$$;
+RAISE NOTICE '[%] Selected timerange: % - %', clock_timestamp(), (SELECT to_timestamp(_start) FROM _timerange), (SELECT to_timestamp(_end) FROM _timerange);
 
 ------------------------------------------------------------
 --------- SELECT ENTITIES WITH TOO FREQUENT STATES ---------
@@ -44,11 +44,11 @@ CREATE TEMPORARY TABLE IF NOT EXISTS _states_meta  AS (
   )
 );
 
-DO $$ BEGIN RAISE NOTICE '[%] Selected entities: %', NOW(), (SELECT string_agg(entity_id, ', ') FROM _states_meta); END$$;
+RAISE NOTICE '[%] Selected entities: %', clock_timestamp(), (SELECT string_agg(entity_id, ', ') FROM _states_meta);
 
-DO $$ BEGIN RAISE NOTICE '[%] Done.', NOW(); END$$;
+RAISE NOTICE '[%] Done.', clock_timestamp();
 
-DO $$ BEGIN RAISE NOTICE '[%] Selecting data to prune...', NOW(); END$$;
+RAISE NOTICE '[%] Selecting data to prune...', clock_timestamp();
 
 ------------------------------------------------------------
 -- CREATE TIME BUCKETS FOR SELECTED ENTITIES AND INTERVAL --
@@ -71,9 +71,9 @@ CREATE TEMPORARY TABLE IF NOT EXISTS _states AS (
   )
 );
 
-DO $$ BEGIN RAISE NOTICE '[%] Done. Selected % entries', NOW(), (SELECT count(*) FROM _states); END$$;
+RAISE NOTICE '[%] Done. Selected % entries', clock_timestamp(), (SELECT count(*) FROM _states);
 
-DO $$ BEGIN RAISE NOTICE '[%] Selecting rows to keep...', NOW(); END$$;
+RAISE NOTICE '[%] Selecting rows to keep...', clock_timestamp();
 
 ------------------------------------------------------------
 -------- KEEP LAST VALUE FOR EACH ENTITY AND BUCKET --------
@@ -121,14 +121,14 @@ WHERE
       _kept_states.old_state_id IS NULL 
   AND _kept_states.metadata_id = _first_dropped_rows.metadata_id;
 
-DO $$ BEGIN RAISE NOTICE '[%] Done. Selected % rows', NOW(), (SELECT count(*) FROM _kept_states); END$$;
+RAISE NOTICE '[%] Done. Selected % rows', clock_timestamp(), (SELECT count(*) FROM _kept_states);
 
 /*
 ------------------------------------------------------------
 ------- CREATE A TEST DATABASE FOR CHECKING RESULTS --------
 ------------------------------------------------------------
 
-DO $$ BEGIN RAISE NOTICE '[%] Setting up test database', NOW(); END$$;
+RAISE NOTICE '[%] Setting up test database', clock_timestamp();
 
 DROP TABLE IF EXISTS _states_test;
 CREATE TEMPORARY TABLE IF NOT EXISTS _states_test AS (
@@ -156,18 +156,18 @@ CREATE INDEX IF NOT EXISTS ix_states_test_old_state_id
     ON _states_test USING btree
     (old_state_id ASC NULLS LAST);
 
-DO $$ BEGIN RAISE NOTICE '[%] Done. Test DB size: %', NOW(), (SELECT count(*) FROM _states_test); END$$;
+RAISE NOTICE '[%] Done. Test DB size: %', clock_timestamp(), (SELECT count(*) FROM _states_test);
 
-DO $$ BEGIN RAISE NOTICE '[%] Updating old_state_ids of test data...', NOW(); END$$;
+RAISE NOTICE '[%] Updating old_state_ids of test data...', clock_timestamp();
 
 UPDATE _states_test
 SET old_state_id = _kept_states.old_state_id
 FROM _kept_states
 WHERE _states_test.state_id = _kept_states.state_id;
 
-DO $$ BEGIN RAISE NOTICE '[%] Done.', NOW(); END$$;
+RAISE NOTICE '[%] Done.', clock_timestamp();
 
-DO $$ BEGIN RAISE NOTICE '[%] Deleting unnecessary data...', NOW(); END$$;
+RAISE NOTICE '[%] Deleting unnecessary data...', clock_timestamp();
 
 DELETE 
 FROM _states_test
@@ -178,7 +178,7 @@ WHERE (
   AND _states_test.state_id NOT IN (SELECT state_id FROM _kept_states)
 );
 
-DO $$ BEGIN RAISE NOTICE '[%] Done.', NOW(); END$$;
+RAISE NOTICE '[%] Done.', clock_timestamp();
 
 SELECT * FROM _states_test ORDER BY metadata_id, last_updated_ts;
 */
@@ -187,20 +187,20 @@ SELECT * FROM _states_test ORDER BY metadata_id, last_updated_ts;
 -------- UPDATE KEPT ROWS WITH PROPER OLD STATE ID ---------
 ------------------------------------------------------------
 
-DO $$ BEGIN RAISE NOTICE '[%] Updating old_state_ids of test data...', NOW(); END$$;
+RAISE NOTICE '[%] Updating old_state_ids of test data...', clock_timestamp();
 
 UPDATE states
 SET old_state_id = _kept_states.old_state_id
 FROM _kept_states
 WHERE states.state_id = _kept_states.state_id;
 
-DO $$ BEGIN RAISE NOTICE '[%] Done.', NOW(); END$$;
+RAISE NOTICE '[%] Done.', clock_timestamp();
 
 ------------------------------------------------------------
 -------- DELETE ALL OTHER STATES IN GIVEN INTERVAL ---------
 ------------------------------------------------------------
 
-DO $$ BEGIN RAISE NOTICE '[%] Deleting unnecessary data...', NOW(); END$$;
+RAISE NOTICE '[%] Deleting unnecessary data...', clock_timestamp();
 
 DELETE 
 FROM states
